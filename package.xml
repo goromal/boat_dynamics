@@ -22,5 +22,6 @@
   <depend>visualization_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
+  <depend>eigen3</depend>
 
 </package>

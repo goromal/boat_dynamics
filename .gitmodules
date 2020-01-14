@@ -1,6 +1,1 @@
-[submodule "scripts/python_utilities"]
-	path = scripts/python_utilities
-	url = https://github.com/goromal/python_utilities.git
-[submodule "lib/utils"]
-	path = lib/utils
-	url = https://github.com/goromal/utils.git
+

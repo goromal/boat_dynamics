@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include "utils/xform.h"
+#include "geometry-utils-lib/xform.h"
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/PoseStamped.h>
@@ -21,6 +21,7 @@ private:
     void setMessageStates(ros::Time &rt);
 
     ros::NodeHandle nh_;
+    ros::NodeHandle nh_private_;
     ros::Timer timer_;
 
     double boat_height_m_;

@@ -22,7 +22,11 @@ catkin_package(
   DEPENDS EIGEN3
 )
 
-include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories(
+  include
+  ${EIGEN3_INCLUDE_DIR}
+  ${catkin_INCLUDE_DIRS}
+)
 
 add_executable(boat_dynamics_node
   src/boat_dynamics_node.cpp

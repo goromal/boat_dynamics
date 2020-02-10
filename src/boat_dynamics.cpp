@@ -2,13 +2,13 @@
 
 namespace boat_dynamics {
 
-BoatDynamics::BoatDynamics() : t_prev_(0.0), t_initialized_(false)
+BoatDynamics::BoatDynamics() : t_prev_(0.0), t_initialized_(false), nh_private_("~")
 {
     nh_ = ros::NodeHandle();
 
     boat_height_m_ = 2.0;
 //    boat_speed_mps_ = 0.5;
-    boat_speed_mps_ = nh_.param<double>("boat_speed", 0.0);
+    boat_speed_mps_ = nh_private_.param<double>("boat_speed", 0.0);
 
     T_0_boat_ = Xformd((Vector3d() << 0.0, 0.0, boat_height_m_).finished(), Quatd::Identity());
     T_NED_0_ = Xformd((Vector3d() << 0.0, 0.0, 0.0).finished(), Quatd::from_euler(M_PI, 0.0, 0.0)).inverse();
@@ -26,7 +26,7 @@ BoatDynamics::BoatDynamics() : t_prev_(0.0), t_initialized_(false)
     marker_.type = visualization_msgs::Marker::MESH_RESOURCE;
     marker_.action = visualization_msgs::Marker::ADD;
     marker_.mesh_resource = "package://boat_dynamics/mesh/ship_nwu_GCS.dae";
-    double boat_scale = 15.0;
+    double boat_scale = 20.0;
     marker_.scale.x = boat_scale;
     marker_.scale.y = boat_scale;
     marker_.scale.z = boat_scale;

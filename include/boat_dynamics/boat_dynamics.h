@@ -30,6 +30,7 @@ private:
     bool t_initialized_;
 
     Xformd T_0_boat_;
+    Xformd T_0_boatNED_;
     Xformd T_NED_0_;
 
     tf2_ros::TransformBroadcaster tbr_;
@@ -37,6 +38,7 @@ private:
     ros::Publisher marker_pub_;
 
     geometry_msgs::TransformStamped transform_;
+    geometry_msgs::TransformStamped transformNED_;
     geometry_msgs::PoseStamped truth_;
     visualization_msgs::Marker marker_;
 };

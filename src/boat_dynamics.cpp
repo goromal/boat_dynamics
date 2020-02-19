@@ -11,6 +11,7 @@ BoatDynamics::BoatDynamics() : t_prev_(0.0), t_initialized_(false), nh_private_(
     boat_speed_mps_ = nh_private_.param<double>("boat_speed", 0.0);
 
     T_0_boat_ = Xformd((Vector3d() << 0.0, 0.0, boat_height_m_).finished(), Quatd::Identity());
+    T_0_boatNED_ = Xformd((Vector3d() << 0.0, 0.0, boat_height_m_).finished(), Quatd::from_euler(M_PI, 0.0, 0.0));
     T_NED_0_ = Xformd((Vector3d() << 0.0, 0.0, 0.0).finished(), Quatd::from_euler(M_PI, 0.0, 0.0)).inverse();
 
     truth_pub_ = nh_.advertise<geometry_msgs::PoseStamped>("boat_truth_NED", 1);
@@ -18,6 +19,8 @@ BoatDynamics::BoatDynamics() : t_prev_(0.0), t_initialized_(false), nh_private_(
 
     transform_.header.frame_id = "world";
     transform_.child_frame_id = "boat";
+    transformNED_.header.frame_id = "world";
+    transformNED_.child_frame_id = "boatNED";
 
     truth_.header.frame_id = "NED";
 
@@ -63,6 +66,7 @@ void BoatDynamics::onUpdate(const ros::TimerEvent &)
     // update and send messages
     setMessageStates(Rt);
     tbr_.sendTransform(transform_);
+    tbr_.sendTransform(transformNED_);
     truth_pub_.publish(truth_);
     marker_pub_.publish(marker_);
 }
@@ -91,6 +95,15 @@ void BoatDynamics::setMessageStates(ros::Time &rt)
 
     marker_.header.stamp = rt;
     marker_.pose = truth_.pose;
+
+    transformNED_.header.stamp = rt;
+    transformNED_.transform.translation.x = T_0_boatNED_.t_(0);
+    transformNED_.transform.translation.y = T_0_boatNED_.t_(1);
+    transformNED_.transform.translation.z = T_0_boatNED_.t_(2);
+    transformNED_.transform.rotation.w = T_0_boatNED_.q_.w();
+    transformNED_.transform.rotation.x = T_0_boatNED_.q_.x();
+    transformNED_.transform.rotation.y = T_0_boatNED_.q_.y();
+    transformNED_.transform.rotation.z = T_0_boatNED_.q_.z();
 }
 
 } // end namespace boat_dynamics
